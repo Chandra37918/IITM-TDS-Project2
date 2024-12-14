@@ -3,17 +3,23 @@
 
 import os
 import sys
+import subprocess
 import pandas as pd
 import matplotlib.pyplot as plt
 import httpx
 import chardet
 
-# Check for seaborn installation
-try:
-    import seaborn as sns
-except ModuleNotFoundError:
-    print("The 'seaborn' library is not installed. Install it using 'pip install seaborn'.")
-    sys.exit(1)
+# Function to ensure required libraries are installed
+def ensure_install(package_name):
+    try:
+        __import__(package_name)
+    except ModuleNotFoundError:
+        print(f"The '{package_name}' library is not installed. Installing it...")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
+
+# Ensure required libraries are installed
+ensure_install("seaborn")
+import seaborn as sns  # Now import seaborn after ensuring installation
 
 # Constants
 API_URL = "https://aiproxy.sanand.workers.dev/openai/v1/chat/completions"
