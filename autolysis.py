@@ -4,22 +4,26 @@
 import os
 import sys
 import subprocess
+
+# Helper function to check and install missing libraries
+def install_package(package):
+    try:
+        __import__(package)
+    except ImportError:
+        print(f"Installing missing package: {package}")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+# Check for required packages
+required_packages = ["pandas", "matplotlib", "seaborn", "httpx", "chardet"]
+for package in required_packages:
+    install_package(package)
+
+# Import modules after ensuring installation
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 import httpx
 import chardet
-
-# Function to ensure required libraries are installed
-def ensure_install(package_name):
-    try:
-        __import__(package_name)
-    except ModuleNotFoundError:
-        print(f"The '{package_name}' library is not installed. Installing it...")
-        subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
-
-# Ensure required libraries are installed
-ensure_install("seaborn")
-import seaborn as sns  # Now import seaborn after ensuring installation
 
 # Constants
 API_URL = "https://aiproxy.sanand.workers.dev/openai/v1/chat/completions"
